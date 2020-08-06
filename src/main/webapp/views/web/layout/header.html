@@ -7,13 +7,35 @@
 			<a class="navbar-brand" th:href="@{/}">3t </a>
 		</h1>
 		<!-- //logo -->
-		<div class="w3ls_right_nav ml-auto d-flex">
+		<div class="w3ls_right_nav ml-auto d-flex" 
+			th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
 			<!-- search form -->
-			<form class="nav-search form-inline my-0 form-control" action="#"
-				method="post">
-				<input class="ml-3 my-sm-0"
-					type="text" style="height: 100%;">
-				<input class="btn btn-outline-secondary  ml-3 my-sm-0"
+			<form class="nav-search form-inline my-0 form-control" 
+				th:if="${#strings.contains(#request.requestURI,'/triplet/categories/') == false or #strings.contains(#request.requestURI,'/products') == false}"
+				th:action="@{/categories/0/products}"
+				method="get">
+				<input th:if="${#request.getParameter('rating') != null}" type="hidden" name="rating" th:value="${#request.getParameter('rating')}"> 
+	 			<input th:if="${#request.getParameter('fromprice') != null}" type="hidden" name="fromprice" th:value="${#request.getParameter('fromprice')}">
+				<input th:if="${#request.getParameter('toprice') != null}" type="hidden" name="toprice" th:value="${#request.getParameter('toprice')}">
+				<input th:if="${#request.getParameter('page') != null}" type="hidden" name="page" th:value="1"> 	 		
+				<input type="search" class="ml-3 my-sm-0"  style="height: 100%;"  
+						placeholder="Tìm gì đó đi" name="name" th:value="${#request.getParameter('name') != null ? #request.getParameter('name'):''}"> 
+				<input
+					class="btn btn-outline-secondary  ml-3 my-sm-0"
+					type="submit" value="Search">
+			</form>
+			<form class="nav-search form-inline my-0 form-control" 
+				th:if="${#strings.contains(#request.requestURI,'/triplet/categories/') and #strings.contains(#request.requestURI,'/products')}"
+				th:action="@{${#strings.substringAfter(#request.requestURI,'triplet')}}"
+				method="get">
+				<input th:if="${#request.getParameter('rating') != null}" type="hidden" name="rating" th:value="${#request.getParameter('rating')}"> 
+	 			<input th:if="${#request.getParameter('fromprice') != null}" type="hidden" name="fromprice" th:value="${#request.getParameter('fromprice')}">
+				<input th:if="${#request.getParameter('toprice') != null}" type="hidden" name="toprice" th:value="${#request.getParameter('toprice')}">
+				<input th:if="${#request.getParameter('page') != null}" type="hidden" name="page" th:value="1"> 	 		
+				<input type="search" class="ml-3 my-sm-0"  style="height: 100%;"  
+						placeholder="Tìm gì đó đi" name="name" th:value="${#request.getParameter('name') != null ? #request.getParameter('name'):''}"> 
+				<input
+					class="btn btn-outline-secondary  ml-3 my-sm-0"
 					type="submit" value="Search">
 			</form>
 			<!-- search form -->
