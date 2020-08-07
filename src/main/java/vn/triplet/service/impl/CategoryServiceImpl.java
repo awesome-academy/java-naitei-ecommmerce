@@ -20,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public CategoryDAO getCategoryDAO() {
 		return categoryDAO;
 	}
-
+	
 	public void setCategoryDAO(CategoryDAO categoryDAO) {
 		this.categoryDAO = categoryDAO;
 	}
@@ -65,6 +65,12 @@ public class CategoryServiceImpl implements CategoryService{
 			logger.error(e);
 			return null;
 		}
+	}
+
+	@Override
+	public List<Category> loadFullCategories() {
+		
+		return getCategoryDAO().loadFullCategories();
 	}
 
 	

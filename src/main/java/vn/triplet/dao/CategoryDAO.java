@@ -9,5 +9,6 @@ public interface CategoryDAO extends BaseDAO<Integer, Category> {
 	public List<Category> loadCategoryWithParentId(int parentId);
 	
 	List<Category> loadCategoriesChildrenIfHasOrLoadSameParentCategories(int categoryId);
-				
+	
+	List<Category> loadFullCategories();
 }

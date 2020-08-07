@@ -67,16 +67,16 @@ public class OrderController extends BaseController {
 	public String newOrder(Model model, HttpSession session, final RedirectAttributes redirectAttributes) {
 		List<CartItem> items = new ArrayList<CartItem>();
 		HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) session.getAttribute("cart");
+		if (cart == null || cart.isEmpty() == true) {
+			redirectAttributes.addFlashAttribute("cart_empty", cart_empty);
+			return "redirect:/cart";
+		}
 		java.util.Set<Integer> keySet = cart.keySet();
 		for (Integer key : keySet) {
 			ProductInfo product = new ProductInfo(productService.findById(key));
 			items.add(new CartItem(cart.get(key), product.getPrice(), product.getImage(), product.getName(), key));
 		}
 		model.addAttribute("orderitems", items);
-		if (cart == null || cart.isEmpty() == true) {
-			redirectAttributes.addFlashAttribute("cart_empty", cart_empty);
-			return "redirect:/cart";
-		}
 		if (session.getAttribute("currentUser") == null)
 			return "redirect:/login";
 		Order order = new Order();
@@ -106,6 +106,8 @@ public class OrderController extends BaseController {
 	String showOrderDetail(@PathVariable("id") int id, Model model, final RedirectAttributes redirectAttributes,
 			HttpServletRequest request) {
 		Order order = checkOwner(request, id);
+		
+		logger.info(order.getOrderItems().size());
 		if (order == null) {
 			redirectAttributes.addFlashAttribute("css", "error");
 			redirectAttributes.addFlashAttribute("msg", msg_notAlow);
@@ -121,7 +123,7 @@ public class OrderController extends BaseController {
 		
 		String typeCss = "error";
 		String message = stt_notChange;
-
+		logger.info("show order");
 		Order order = checkOwner(request, id);
 		if (order == null) {
 			redirectAttributes.addFlashAttribute("css", typeCss);

@@ -44,8 +44,11 @@ public class CartController {
 	@Value("${product_not_exist}")
 	private String product_not_exist;
 
+	@Value("${cart_empty}")
+	private String cart_empty;
+
 	@GetMapping
-	public String index(HttpSession session, Model model) {
+	public String index(HttpSession session, Model model, final RedirectAttributes redirectAttributes) {
 		logger.info("cart index");
 		List<CartItem> items = new ArrayList<CartItem>();
 		HashMap<Integer, Integer> cart = (HashMap<Integer, Integer>) session.getAttribute("cart");
@@ -58,7 +61,8 @@ public class CartController {
 			model.addAttribute("orderitems", items);
 			return "views/web/carts/index";
 		}
-		return "redirect:/products";
+		redirectAttributes.addFlashAttribute("cart_empty", cart_empty);
+		return "views/web/carts/index";
 
 	}
 
@@ -69,7 +73,7 @@ public class CartController {
 		ProductInfo product = new ProductInfo(productService.findById(productId));
 		if (product == null) {
 			redirectAttributes.addFlashAttribute("product_not_exist", product_not_exist);
-			return "redirect:/products";
+			return "redirect:/";
 		}
 		HashMap<Integer, Integer> cart = new HashMap<Integer, Integer>();
 		if (session.getAttribute("cart") == null) {
@@ -83,9 +87,9 @@ public class CartController {
 				cart.put(productId, quantity);
 			}
 		}
-		
+
 		redirectAttributes.addFlashAttribute("add_item_success", add_item_success);
-		setAttr(session,cart);
+		setAttr(session, cart);
 		return "redirect:/cart";
 	}
 
@@ -99,7 +103,7 @@ public class CartController {
 			return "redirect:/cart";
 		}
 		cart.remove(productId);
-		setAttr(session,cart);
+		setAttr(session, cart);
 		return "redirect:/cart";
 
 	}
@@ -134,7 +138,7 @@ public class CartController {
 			}
 
 		}
-		setAttr(session,cart);
+		setAttr(session, cart);
 		return "redirect:/cart";
 	}
 
@@ -157,8 +161,8 @@ public class CartController {
 		}
 		return false;
 	}
-	private void setAttr(HttpSession session,HashMap<Integer, Integer> cart)
-	{
+
+	private void setAttr(HttpSession session, HashMap<Integer, Integer> cart) {
 		cartSize = cart.size();
 		session.setAttribute("cart", cart);
 		session.setAttribute("cartSize", cartSize);
