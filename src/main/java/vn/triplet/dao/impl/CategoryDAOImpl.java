@@ -41,5 +41,13 @@ public class CategoryDAOImpl extends GenericDAO<Integer, Category> implements Ca
 				loadCategoryWithParentId(categoryId);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Category> loadFullCategories() {
+		return getSession().createQuery("from Category where parent_id is not null")
+				.getResultList();
+	}
+	
+	
 
 }

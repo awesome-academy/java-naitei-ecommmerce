@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head
+	th:replace="views/admin/layout/base-layout :: head(~{this :: title}, ~{this :: .custom-link}, ~{this :: .custom-script})">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="admin page">
+
+<title>Product Information</title>
+
+<link th:href="@{/assets/admin/vendor/fontawesome-free/css/all.min.css}"
+	rel="stylesheet" type="text/css">
+<link
+	th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}"
+	rel="stylesheet">
+<link th:href="@{/assets/web/css/stars.css}" rel="stylesheet"
+	type="text/css" media="all">
+<!-- Custom styles for this template-->
+<link th:href="@{/assets/admin/css/sb-admin-2.min.css}" rel="stylesheet">
+
+<link class="custom-link"
+	th:href="@{/assets/admin/css/user-profile.css}" rel="stylesheet" />
+
+</head>
+
+<body id="page-top">
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:replace="views/admin/layout/sidebar:: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:replace="views/admin/layout/topbar:: topbar"></div>
+
+				<!-- Begin Page Content -->
+
+				<div class="container-fluid">
+
+					<div
+						th:insert="views/admin/layout/base-layout :: content(~{ :: #product-info})">
+						<div id="product-info" class="container emp-profile">
+							<form method="post">
+								<div class="row">
+									<div class="col-md-4">
+										<div class="profile-img">
+											<img
+												th:src="@{'/assets/images/'+${#strings.substringBefore(product.image,'/')}}"
+												alt="" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="profile-head ">
+											<h3 th:text="${product.name}"></h3>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<label>Product Id</label>
+											</div>
+											<div class="col-md-8">
+												<p th:text=${product.id}></p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<label>Name</label>
+											</div>
+											<div class="col-md-8">
+												<p th:text=${product.name}></p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<label>Description</label>
+											</div>
+											<div class="col-md-8">
+												<p th:text=${product.description}></p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<label>Rate average</label>
+											</div>
+											<div class="col-md-8">
+												<div>
+													<!--First Star-->
+													<i class="fa fa-star-o checkedStar"
+														th:if="${product.rate_avg == 0}"></i> <i
+														class="fa fa-star-half-o checkedStar"
+														th:if="${product.rate_avg > 0 && product.rate_avg < 1}"></i>
+													<i class="fa fa-star checkedStar"
+														th:if="${product.rate_avg >= 1}"></i>
+													<!--Second Star-->
+													<i class="fa fa-star-o checkedStar"
+														th:if="${product.rate_avg <= 1}"></i> <i
+														class="fa fa-star-half-o checkedStar"
+														th:if="${product.rate_avg > 1 && product.rate_avg < 2}"></i>
+													<i class="fa fa-star checkedStar"
+														th:if="${product.rate_avg >= 2}"></i>
+													<!--Third Star-->
+													<i class="fa fa-star-o checkedStar"
+														th:if="${product.rate_avg <= 2}"></i> <i
+														class="fa fa-star-half-o checkedStar"
+														th:if="${product.rate_avg > 2 && product.rate_avg < 3}"></i>
+													<i class="fa fa-star checkedStar"
+														th:if="${product.rate_avg >= 3}"></i>
+													<!--Fourth Star-->
+													<i class="fa fa-star-o checkedStar"
+														th:if="${product.rate_avg <= 3}"></i> <i
+														class="fa fa-star-half-o checkedStar"
+														th:if="${product.rate_avg > 3 && product.rate_avg < 4}"></i>
+													<i class="fa fa-star checkedStar"
+														th:if="${product.rate_avg >= 4}"></i>
+													<!--Fifth Star-->
+													<i class="fa fa-star-o checkedStar"
+														th:if="${product.rate_avg <= 4}"></i> <i
+														class="fa fa-star-half-o checkedStar"
+														th:if="${product.rate_avg > 4 && product.rate_avg < 5}"></i>
+													<i class="fa fa-star checkedStar"
+														th:if="${product.rate_avg == 5}"></i>
+
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-4">
+												<label>Quantity</label>
+											</div>
+											<div class="col-md-8">
+												<p th:text=${product.quantity}></p>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-4">
+												<label>Category</label>
+											</div>
+											<div class="col-md-8">
+												<p th:text=${product.category.name}></p>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="col-md-4">
+												<label>Status</label>
+											</div>
+											<div class="col-md-8">
+												<p th:text="${product.delete_time==null}?'Deleted':'Available'"></p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-2">
+
+										<a th:href="@{'/admin/products/'+${product.id}+'/edit'}">
+											<button type="button" class="btn btn-light">Edit</button>
+										</a>
+
+
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<div th:replace="views/admin/layout/footer:: footer"></div>
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top"> <i
+		class="fas fa-angle-up"></i>
+	</a>
+
+
+	<script th:src="@{/assets/admin/vendor/jquery/jquery.min.js}"></script>
+	<script
+		th:src="@{/assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+
+	<script
+		th:src="@{/assets/admin/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+
+	<script class="custom-script"
+		th:src="@{/assets/admin/js/sb-admin-2.min.js}"></script>
+
+
+
+</body>
+
+</html>

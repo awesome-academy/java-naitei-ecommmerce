@@ -54,7 +54,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="rem1" th:each="item,iter : ${orderitems}">
+							<tr  th:if="${orderitems!=null}"class="rem1" th:each="item,iter : ${orderitems}">
 								<form th:object="${item}"
 									th:action="@{'/cart/update/'+${item.productId}}">
 								<td class="invert" th:text="${iter.index+1}"></td>
@@ -101,15 +101,15 @@
 				<div class="row checkout-left mt-5">
 					<div class="col-md-4 checkout-left-basket">
 						<h3 th:if="${session.totalCart!=null}"
-							th:text="@{'Total: '+${#numbers.formatDecimal(session.totalCart, 1, 'DEFAULT', 2, 'DEFAULT')}}"></h3>
-						<h3 th:if="${session.totalCart==null}" th:text="@{'Total:0 '}"></h3>
+							th:text="@{'Total: '+${#numbers.formatDecimal(session.totalCart, 1, 'DEFAULT', 2, 'DEFAULT')}+'đ'}"></h3>
+						<h3 th:if="${session.totalCart==null}" th:text="@{'Total:0đ '}"></h3>
 					</div>
 					<div class="col-md-4 address_form">
 						<form th:action="@{/orders/add}"
 							class="creditly-card-form shopf-sear-headinfo_form">
 							<div class="creditly-wrapper wrapper">
 								<div class="information-wrapper">
-									<a th:href="@{/products}" class="btn btn-warning"><i
+									<a th:href="@{/}" class="btn btn-warning"><i
 										class="fa fa-angle-left"></i> Continue Shopping</a>
 									<button class="submit check_out">Proceed to checkout</button>
 								</div>
